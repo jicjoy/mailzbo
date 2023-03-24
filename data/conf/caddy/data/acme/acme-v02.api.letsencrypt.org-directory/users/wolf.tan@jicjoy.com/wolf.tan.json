@@ -1,0 +1,9 @@
+{
+	"status": "valid",
+	"contact": [
+		"mailto:wolf.tan@jicjoy.com"
+	],
+	"termsOfServiceAgreed": true,
+	"orders": "",
+	"location": "https://acme-v02.api.letsencrypt.org/acme/acct/1022645847"
+}

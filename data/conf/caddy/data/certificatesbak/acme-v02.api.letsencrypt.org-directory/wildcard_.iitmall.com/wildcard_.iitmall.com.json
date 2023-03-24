@@ -1,0 +1,8 @@
+{
+	"sans": [
+		"*.iitmall.com"
+	],
+	"issuer_data": {
+		"url": "https://acme-v02.api.letsencrypt.org/acme/cert/0302cc8b6a53dcad110d98dc5756817975a6"
+	}
+}

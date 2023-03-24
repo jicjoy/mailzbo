@@ -1,0 +1,8 @@
+{
+	"sans": [
+		"*.uqixi.com"
+	],
+	"issuer_data": {
+		"url": "https://acme-v02.api.letsencrypt.org/acme/cert/04be5e68c8c4693901f9f064c89ab66b24ba"
+	}
+}

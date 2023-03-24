@@ -1,0 +1,14 @@
+{
+	"status": "valid",
+	"contact": [
+		"mailto:wolf.tan@jicjoy.com"
+	],
+	"termsOfServiceAgreed": true,
+	"externalAccountBinding": {
+		"protected": "eyJhbGciOiJIUzI1NiIsImtpZCI6ImpqS3Z1b1pDZWlRQ2hQbkJVYlVlakEiLCJ1cmwiOiJodHRwczovL2FjbWUuemVyb3NzbC5jb20vdjIvRFY5MC9uZXdBY2NvdW50In0",
+		"payload": "eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6Im1rUzg1ZUk4LWZ2eGdiREVWTUhmMmstQ29CT2pCLUplTzZib1dqTVFBOTQiLCJ5Ijoic0Nnb3RmdUxuM1hLeVoyVFU0Y0dVdUlpcWN2SXFlVzB3OHMwSl9nSmNxWSJ9",
+		"signature": "Ju7tU0WkGwEXE_gW6zANtyGmx8Qa771x7PTDaQ6QK7c"
+	},
+	"orders": "https://acme.zerossl.com/v2/DV90/account/jjKvuoZCeiQChPnBUbUejA/orders",
+	"location": "https://acme.zerossl.com/v2/DV90/account/jjKvuoZCeiQChPnBUbUejA"
+}

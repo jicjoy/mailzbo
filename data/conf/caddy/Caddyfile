@@ -1,0 +1,74 @@
+# The Caddyfile is an easy way to configure your Caddy web server.
+#
+# Unless the file starts with a global options block, the first
+# uncommented line is always the address of your site.
+#
+# To use your own domain name (with automatic HTTPS), first make
+# sure your domain's A/AAAA DNS records are properly pointed to
+# this machine's public IP, then replace ":80" below with your
+# domain name.
+{
+    
+	debug
+	
+	# Set this path to your site's directory.
+	# root * /usr/share/caddy
+    email  wolf.tan@jicjoy.com 
+    
+	http_port 80
+	https_port 443
+	log {
+		output file /data/web/config/log/access.log
+	}
+
+	# Enable the static file server.
+	# file_server
+	#auto_https on
+	# Another common task is to set up a reverse proxy:
+	# reverse_proxy localhost:8080
+
+	# Or serve a PHP site through php-fpm:
+	# php_fastcgi localhost:9000
+	#pki
+	pki {
+		ca {
+			name "Wolf Websites"
+			root {
+				cert "/data/web/caddy/ssl/cert.pem"
+                key  "/data/web/caddy/ssl/key.pem"
+			}
+		}
+	}
+}
+
+admin.uqixi.com:80 {
+   import /data/web/caddy/vmail/web.conf
+}
+
+
+
+
+
+*.iitmall.com:80 {
+	encode gzip
+	 import /data/web/caddy/magento.conf
+}
+*.iitmall.com:443 {
+	encode gzip
+    tls  {
+        dns huaweidns {
+			access_key_id AQQKBINCWK55XM8Y20L2
+			access_key_secret BUdpejoO9yipfDcZ3t9dEefZkVYE3rAygQpo1eoD
+        }
+		#ca https://acme-staging-v02.api.letsencrypt.org/directory
+		#ca_root /data/web/caddy/ssl/key.pem
+		propagation_delay 5s
+		resolvers 223.5.5.5 1.1.1.1
+		dns_challenge_override_domain _acme.1377878.com
+	
+	
+    }
+
+   import /data/web/caddy/magento.conf
+	
+}
