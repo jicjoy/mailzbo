@@ -68,9 +68,6 @@ services:
           source: ${MAIL_PRODJECT:-./}data/hooks/phpfpm
           target: /hooks
         - type: bind
-          source: ${DOCKER_WEB_PROJECT_SOURCE:-./}html
-          target: ${PROJECT_SOURCE:-/data/websites}/html
-        - type: bind
           source: ${MAIL_PRODJECT:-./}data/conf/rspamd/dynmaps
           target: /dynmaps
           read_only: true
@@ -124,10 +121,10 @@ services:
           target: /etc/nginx/conf.d/
         - type: bind
           source: ${DOCKER_WEB_PROJECT_SOURCE:-./}wwwroot
-          target: ${PROJECT_SOURCE:-/data/websites}/www
+          target: ${PROJECT_SOURCE:-/data/websites}
         - type: bind
           source:  ${MAIL_PRODJECT:-./}data/web
-          target: ${PROJECT_SOURCE:-/data/websites}/vmail
+          target:  /data/vmail
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       environment:
