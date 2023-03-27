@@ -1,5 +1,6 @@
-FROM  php:8.1.16-fpm-buster
+FROM  php:8.1.17-fpm-bullseye
 
+ARG   GITHUB_PROXY=https://ghproxy.com/
 LABEL maintainer "wolf tan <wolf.tan@zbocloud.com>"
 
 ENV  DOCUMENT_ROOT="/data/websites" \
@@ -79,7 +80,7 @@ RUN set -eux \
 		CPPFLAGS="$PHP_CPPFLAGS" \
 		LDFLAGS="$PHP_LDFLAGS" \
 	; \
-   git clone https://github.com/php/pecl-mail-mailparse \
+   git clone ${GITHUB_PROXY}https://github.com/php/pecl-mail-mailparse \
   && cd pecl-mail-mailparse \
   && pecl install package.xml \
   && pecl channel-update pecl.php.net \

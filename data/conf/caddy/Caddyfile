@@ -40,12 +40,38 @@
 		}
 	}
 }
-
-admin.uqixi.com:80 {
+admin.zbocloud.com:80,
+admin.zbocloud.com:443 {
+     tls  {
+        dns huaweidns {
+			access_key_id AQQKBINCWK55XM8Y20L2
+			access_key_secret BUdpejoO9yipfDcZ3t9dEefZkVYE3rAygQpo1eoD
+        }
+		#ca https://acme-staging-v02.api.letsencrypt.org/directory
+		#ca_root /data/web/caddy/ssl/key.pem
+		propagation_delay 5s
+		resolvers 223.5.5.5 1.1.1.1
+	#	dns_challenge_override_domain _acme.1377878.com
+	
+	
+    }
    import /data/web/caddy/vmail/web.conf
 }
-
-
-
+mail.zbocloud.com:80,
+mail.zbocloud.com:443 {
+	tls {
+       dns huaweidns {
+			access_key_id AQQKBINCWK55XM8Y20L2
+			access_key_secret BUdpejoO9yipfDcZ3t9dEefZkVYE3rAygQpo1eoD
+        }
+		#ca https://acme-staging-v02.api.letsencrypt.org/directory
+		#ca_root /data/web/caddy/ssl/key.pem
+		propagation_delay 5s
+		resolvers 223.5.5.5 1.1.1.1
+		#dns_challenge_override_domain _acme.1377878.com
+	
+	}  
+   import /data/web/caddy/vmail/sogo.conf
+}
 
 
