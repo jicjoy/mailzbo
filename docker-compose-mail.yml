@@ -17,7 +17,7 @@ services:
 
   mysql-mailcow:
       container_name: ${ECONTAINER_NAME:-}mysql
-      image: mysql:8.0.28
+      image: mariadb:10.5
       stop_grace_period: 45s
       volumes:
         - type: volume
@@ -120,11 +120,11 @@ services:
           source: ${MAIL_PRODJECT:-./}data/conf/nginx/
           target: /etc/nginx/conf.d/
         - type: bind
-          source: ${DOCKER_WEB_PROJECT_SOURCE:-./}wwwroot
-          target: ${PROJECT_SOURCE:-/data/websites}
+          source: ${DOCKER_WEB_PROJECT_SOURCE:-./}
+          target: ${PROJECT_SOURCE:-/data/websites}/www
         - type: bind
-          source:  ${MAIL_PRODJECT:-./}data/web
-          target:  /data/vmail
+          source:  ${MAIL_PRODJECT:-./}data/vmail
+          target:  /data/websites/vmail
       dns:
         - ${IPV4_NETWORK:-172.22.1}.254
       environment:
@@ -183,6 +183,12 @@ services:
         - 8.8.8.8
       environment:
        - XDG_DATA_HOME=/data/web/
+       - MAILCOW_HOSTNAME=${MAILCOW_HOSTNAME}
+       - IPV4_NETWORK=${IPV4_NETWORK:-172.22.1}
+       - TZ=${TZ}
+       - SKIP_SOGO=${SKIP_SOGO:-n}
+       - ALLOW_ADMIN_EMAIL_LOGIN=${ALLOW_ADMIN_EMAIL_LOGIN:-n}
+       - ADDITIONAL_SERVER_NAMES=${ADDITIONAL_SERVER_NAMES:-}
        - XDG_CONFIG_HOME=/data/web/
       cap_drop:
         - NET_ADMIN
@@ -193,7 +199,7 @@ services:
       volumes:
         - ${MAIL_PRODJECT:-./}data/conf/caddy/Caddyfile:/etc/caddy/Caddyfile
         - type: bind
-          source: ${DOCKER_WEB_PROJECT_SOURCE:-./}wwwroot
+          source: ${DOCKER_WEB_PROJECT_SOURCE:-./}
           target: ${PROJECT_SOURCE:-/data/websites}/www
         - type: bind
           source: ${MAIL_PRODJECT:-./}data/web
@@ -210,6 +216,9 @@ services:
           read_only: true
           volume:
             nocopy: true
+        - ${MAIL_PRODJECT:-./}data/conf/rspamd/dynmaps:/dynmaps:ro,z
+        - ${MAIL_PRODJECT:-./}data/conf/rspamd/meta_exporter:/meta_exporter:ro,z
+        - sogo-web-vol-1:/usr/lib/GNUstep/SOGo/
       networks:
         mailcow-network:
           aliases:
@@ -342,7 +351,7 @@ services:
       volumes:
         - ${MAIL_PRODJECT:-./}data/hooks/dovecot:/hooks:Z
         - ${MAIL_PRODJECT:-./}data/conf/dovecot:/etc/dovecot:z
-        - ${MAIL_PRODJECT:-./}data/assets/ssl:/etc/ssl/mail/:ro,z
+        - ${MAIL_PRODJECT:-./}data/conf/caddy/data/ssl:/etc/ssl/mail/:ro,z
         - ${MAIL_PRODJECT:-./}data/conf/sogo/:/etc/sogo/:z
         - ${MAIL_PRODJECT:-./}data/conf/phpfpm/sogo-sso/:/etc/phpfpm/:z
         - vmail-vol-1:/var/vmail
@@ -648,6 +657,19 @@ services:
       volumes:
         - /var/run/docker.sock:/var/run/docker.sock:ro
         - /lib/modules:/lib/modules:ro
+
+networks:
+  mailcow-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-mailcow
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: ${IPV4_NETWORK:-172.22.1}.0/24
+        - subnet: ${IPV6_NETWORK:-fd4d:6169:6c63:6f77::/64}
+
 volumes:
   vmail-vol-1:
   vmail-index-vol-1:
