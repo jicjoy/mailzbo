@@ -9,11 +9,11 @@
 # domain name.
 {
     
-	debug
+	#debug
 	
 	# Set this path to your site's directory.
 	# root * /usr/share/caddy
-    email  wolf.tan@jicjoy.com 
+       email  wolf.tan@jicjoy.com 
     
 	http_port 80
 	https_port 443
@@ -39,39 +39,64 @@
 			}
 		}
 	}
-}
-admin.zbocloud.com:80,
-admin.zbocloud.com:443 {
-     tls  {
-        dns huaweidns {
-			access_key_id AQQKBINCWK55XM8Y20L2
-			access_key_secret BUdpejoO9yipfDcZ3t9dEefZkVYE3rAygQpo1eoD
-        }
-		#ca https://acme-staging-v02.api.letsencrypt.org/directory
-		#ca_root /data/web/caddy/ssl/key.pem
-		propagation_delay 5s
-		resolvers 223.5.5.5 1.1.1.1
-	#	dns_challenge_override_domain _acme.1377878.com
-	
-	
-    }
-   import /data/web/caddy/vmail/web.conf
-}
-mail.zbocloud.com:80,
-mail.zbocloud.com:443 {
-	tls {
-       dns huaweidns {
-			access_key_id AQQKBINCWK55XM8Y20L2
-			access_key_secret BUdpejoO9yipfDcZ3t9dEefZkVYE3rAygQpo1eoD
-        }
-		#ca https://acme-staging-v02.api.letsencrypt.org/directory
-		#ca_root /data/web/caddy/ssl/key.pem
+	 
+	acme_dns huaweidns {
+		access_key_id AQQKBINCWK55XM8Y20L2
+		access_key_secret BUdpejoO9yipfDcZ3t9dEefZkVYE3rAygQpo1eoD
+	}
+	 
+	 cert_issuer zerossl  {
 		propagation_delay 5s
 		resolvers 223.5.5.5 1.1.1.1
 		#dns_challenge_override_domain _acme.1377878.com
-	
-	}  
-   import /data/web/caddy/vmail/sogo.conf
+	 }
+    
+}
+*.zbocloud.com:80,
+*.zbocloud.com:443 {
+     @admin host admin.zbocloud.com
+	 handle @admin {
+       import /data/web/caddy/vmail/web.conf
+	 }
+    @mail host mail.zbocloud.com
+
+    handle @mail {
+        import /data/web/caddy/vmail/sogo.conf
+    }
+   @www host www.zbocloud.com
+   handle @www {
+      root * /data/websites/www/www
+     file_server {
+		index index.php index.html
+	}
+      try_files {path} {path}/index.html index.html
+    
+  } 
+   error * "Unauthorized" 403
+
+    root * /data/websites/vmail 
+   handle_errors {
+         rewrite * /_status.502.html
+        
+    }
+ 
+#  respond * "Access denied" 502 {
+#    close 
+#   }
+}
+ 
+*.uqixi.com:80,
+*.uqixi.com:443 {
+    @www host www.uqixi.com
+   handle @www {
+      root * /data/websites/www/uqixi
+     file_server {
+                index index.php index.html
+        }
+      try_files {path} {path}/index.html index.html
+  }
+  error * "Unauthorized" 403
+
 }
 
 
